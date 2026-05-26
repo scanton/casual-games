@@ -8,7 +8,7 @@ import {
 
 export const HINT_DELAY      = 25   // seconds of idle before hint shows
 export const LEVEL_WIN_DELAY = 2.2  // seconds before auto-advancing level
-import type { Cell, TileType, Phase, HMState, Particle, FloatingText, SavedHMState } from './types'
+import type { Cell, TileType, HMState, SavedHMState } from './types'
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

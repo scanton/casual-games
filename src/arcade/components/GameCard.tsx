@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { Link } from 'wouter'
 import { GameConfig, ArcadeUser } from '../lib/types'
 import { getGameSave } from '../store/arcadeStore'
@@ -39,10 +40,11 @@ export default function GameCard({ game, user }: Props) {
       {/* Thumbnail */}
       <div className="aspect-video relative overflow-hidden flex-shrink-0">
         {game.thumbnail ? (
-          <img
+          <Image
             src={game.thumbnail}
             alt={game.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
           />
         ) : (
           <div

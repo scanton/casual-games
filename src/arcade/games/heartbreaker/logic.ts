@@ -4,7 +4,7 @@ import {
   HEART_COLORS, INITIAL_PALETTE, COLORS,
   type HeartColor,
 } from './constants'
-import type { HBState, GridHeart, Projectile, Particle, SavedHBState } from './types'
+import type { HBState, GridHeart, Projectile, SavedHBState } from './types'
 
 // ─── Grid geometry ────────────────────────────────────────────────────────────
 
@@ -498,7 +498,7 @@ export function calcTrajectory(
   if (ty >= sy - 10) return []
   const dx = tx - sx, dy = ty - sy
   const len = Math.sqrt(dx * dx + dy * dy)
-  let vx = dx / len, vy = dy / len
+  let vx = dx / len; const vy = dy / len
   let x = sx, y = sy
   const step = R * 0.5
   const pts: { x: number; y: number }[] = [{ x, y }]

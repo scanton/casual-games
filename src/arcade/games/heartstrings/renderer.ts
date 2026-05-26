@@ -1,5 +1,5 @@
 import { GRID_COLS, GRID_ROWS, COLORS, HEART_COLORS, WRAP_LEVEL, ARROW_LIFETIME, type HeartColor } from './constants'
-import type { HSState, Food } from './types'
+import type { HSState } from './types'
 import { computeGridLayout } from './logic'
 
 // ── Heart shape ───────────────────────────────────────────────────────────────

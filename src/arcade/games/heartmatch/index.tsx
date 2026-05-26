@@ -169,7 +169,7 @@ export default function HeartMatch({ savedState, onSaveState, onGameOver }: Game
         s.selected = null
       }
     }
-  }, [getCanvasPos, posToCell, handleCellTap])
+  }, [getCanvasPos, handleCellTap])
 
   // ── Keyboard ──────────────────────────────────────────────────────────────
   useEffect(() => {
