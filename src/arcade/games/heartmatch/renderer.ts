@@ -167,12 +167,14 @@ function drawCell(
     ctx.fillText('✦', cx, cy + 1)
     ctx.restore()
   }
-  // Wild tile: rainbow shimmer
+  // Wild tile: rainbow shimmer with colored border showing which color it matches
   else if (cell.type === 'wild') {
+    // Colored backing heart (slightly larger) — shows the color this wild will clear
+    drawHeartColor(ctx, cx, cy, R * 1.18, cell.color, 0.92)
+
+    // Rainbow shimmer on top
     const hue  = (time * 110) % 360
-    const base  = `hsl(${hue},80%,50%)`
-    const light = `hsl(${hue},100%,78%)`
-    drawHeartRaw(ctx, cx, cy, R, base, light)
+    drawHeartRaw(ctx, cx, cy, R, `hsl(${hue},80%,50%)`, `hsl(${hue},100%,78%)`)
     ctx.save()
     for (let k = 0; k < 4; k++) {
       const a = (k / 4) * Math.PI * 2 + time * 1.8

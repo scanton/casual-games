@@ -169,19 +169,50 @@ export function markPopping(
     for (const { row, col } of run.cells) popSet.add(`${row},${col}`)
   }
 
-  // Spawn special tile from longest run on direct player swap
+  // Spawn special tile from straight 4+/5+ run or L/T/+ shape on direct player swap
   if (state.cascadeCount === 0) {
+    let spawnType: TileType | null = null
+    let spawnCell: { row: number; col: number } | null = null
+
+    // Check straight runs: 4+ → power, 5+ → wild
     let maxRun: MatchRun | null = null
     for (const run of runs) {
       if (!maxRun || run.cells.length > maxRun.cells.length) maxRun = run
     }
     if (maxRun && maxRun.cells.length >= 4) {
-      const centerIdx = Math.floor(maxRun.cells.length / 2)
-      const { row: sr, col: sc } = maxRun.cells[centerIdx]
+      spawnType = maxRun.cells.length >= 5 ? 'wild' : 'power'
+      spawnCell = maxRun.cells[Math.floor(maxRun.cells.length / 2)]
+    }
+
+    // Check L/T/+ shapes: two runs sharing a cell with ≥5 combined unique cells → wild
+    // Overrides straight-run result when found (L-shapes are harder to achieve)
+    const cellRunMap = new Map<string, MatchRun[]>()
+    for (const run of runs) {
+      for (const { row, col } of run.cells) {
+        const key = `${row},${col}`
+        if (!cellRunMap.has(key)) cellRunMap.set(key, [])
+        cellRunMap.get(key)!.push(run)
+      }
+    }
+    for (const [key, sharedRuns] of cellRunMap) {
+      if (sharedRuns.length < 2) continue
+      const combined = new Set<string>()
+      for (const run of sharedRuns)
+        for (const { row, col } of run.cells) combined.add(`${row},${col}`)
+      if (combined.size >= 5) {
+        const [r, c] = key.split(',').map(Number)
+        spawnType = 'wild'
+        spawnCell = { row: r, col: c }
+        break
+      }
+    }
+
+    if (spawnType && spawnCell) {
+      const { row: sr, col: sc } = spawnCell
       const cell = state.board[sr][sc]
       if (!cell.locked) {
         popSet.delete(`${sr},${sc}`)
-        cell.type = maxRun.cells.length >= 5 ? 'wild' : 'power'
+        cell.type = spawnType
       }
     }
   }
